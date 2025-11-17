@@ -10,8 +10,7 @@ export default async function DashboardPage() {
     redirect("/auth/login");
   }
 
-
-
+  
   return (
     <ControlButtons />
   );

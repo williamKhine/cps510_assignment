@@ -1,15 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import TableSearch from "@/components/table-search";
 
 export default async function TablePage({ params }: { params: Promise<{ tables: string }> }) {
   const { tables } = await params;
@@ -22,40 +13,18 @@ export default async function TablePage({ params }: { params: Promise<{ tables: 
     redirect("/auth/login");
   }
 
-  const { data: tableData, error: tableError } = await supabase.from(tables).select("*");
-  if (tableError) {
-    return <div className="p-6">Error loading table data: {tableError.message}</div>;
+  // fetch one row to infer field names for the client search component
+  const { data: sampleData, error: sampleError } = await supabase.from(tables).select("*").limit(1);
+  if (sampleError) {
+    return <div className="p-6">Error loading table data: {sampleError.message}</div>;
   }
 
+  const fields = sampleData && sampleData.length > 0 ? Object.keys(sampleData[0]) : [];
+
   return (
-    <Table>
-      <TableCaption>{table_name} Data</TableCaption>
-      <TableHeader>
-        <TableRow>
-          {tableData && tableData.length > 0 ? (
-            Object.keys(tableData[0]).map((key) => (
-              <TableHead key={key}>{key}</TableHead>
-            ))
-          ) : (
-            <TableHead>No Data</TableHead>
-          )}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {tableData && tableData.length > 0 ? (
-          tableData.map((row: any, index: number) => (
-            <TableRow key={index}>
-              {Object.values(row).map((value, idx) => (
-                <TableCell key={idx}>{String(value)}</TableCell>
-              ))}
-            </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={1}>No data available</TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <div className="p-6">
+      <h2 className="text-lg font-medium mb-4">{table_name} Data</h2>
+      <TableSearch table={tables} fields={fields} />
+    </div>
   );
 }
