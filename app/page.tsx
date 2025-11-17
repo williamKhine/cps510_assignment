@@ -12,7 +12,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-dvh flex flex-col items-center justify-center">
+    <main className="min-h-screen flex flex-col items-center justify-center">
       <AuthButton />
     </main>
   );
