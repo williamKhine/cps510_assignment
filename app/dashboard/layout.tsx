@@ -9,15 +9,24 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  const tables = ["Emails","Teams", "Users", "Agents", "Tickets", "Messages", "Issues", "Reports", "Solutions"];
+  const tables = [
+    "Emails",
+    "Teams",
+    "Users",
+    "Agents",
+    "Tickets",
+    "Messages",
+    "Issues",
+    "Reports",
+    "Solutions",
+  ];
 
   return (
     <main className="min-h-screen flex flex-col items-center">
@@ -25,20 +34,39 @@ export default function DashboardLayout({
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"} className="text-xl">Helpdesk System</Link>
+              <Link href={"/"} className="text-xl">
+                Helpdesk System
+              </Link>
             </div>
 
-              {tables.map((table) => (
-                <NavigationMenu key={table}>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href={`/dashboard/${table.toLowerCase()}`}>{table}</Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
-              ))}
+            {tables.map((table) => (
+              <NavigationMenu key={table}>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      <Link href={`/dashboard/${table.toLowerCase()}`}>
+                        {table}
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            ))}
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    asChild
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    <Link href="/dashboard/sample">Sample</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             <AuthButton />
           </div>
         </nav>
